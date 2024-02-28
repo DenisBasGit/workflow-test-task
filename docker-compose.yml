@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web: &web
+    image: web-backend-fastapi
+    build: .
+    command: /bin/sh -c "uvicorn src.main:app --reload --host 0.0.0.0 --port 8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    env_file:
+      - .envs/.local/.fastapi
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data-workflow
+    env_file:
+      - .envs/.local/.db
+    ports:
+      - "5435:5432"
+
+
+volumes:
+  postgres_data:
+
