@@ -1,26 +1,30 @@
 from abc import ABC, abstractmethod
-from typing import Generic, Optional, Type, Dict, Any
+from typing import Generic, Optional, Type, Dict, Any, TypeVar, List
 
 from sqlalchemy import insert, select, update, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import exists
 
+from src.database import Base
+from src.utils.exceptions import NotFoundException
 
-class GenericRepository(ABC):
+T = TypeVar("T", bound=Base)
+
+class GenericRepository(Generic[T], ABC):
     @abstractmethod
-    async def get_by_id(self, id: int):
+    async def get_by_id(self, id: int) -> Optional[T]:
         raise NotImplementedError()
 
     @abstractmethod
-    async def list(self, **filters):
+    async def list(self, **filters) -> List[T]:
         raise NotImplementedError()
 
     @abstractmethod
-    async def add(self, record):
+    async def add(self, record: T) -> T:
         raise NotImplementedError()
 
     @abstractmethod
-    async def update(self, record):
+    async def update(self, record: T) -> T:
         raise NotImplementedError()
 
     @abstractmethod
@@ -28,11 +32,11 @@ class GenericRepository(ABC):
         raise NotImplementedError()
 
 
-class GenericSqlRepository(GenericRepository):
+class GenericSqlRepository(GenericRepository[T], ABC):
     """Generic SQL Repository.
     """
 
-    def __init__(self, session: AsyncSession, model_cls) -> None:
+    def __init__(self, session: AsyncSession, model_cls: Type[T]) -> None:
         """Creates a new repository instance.
 
         Args:
@@ -51,10 +55,10 @@ class GenericSqlRepository(GenericRepository):
         Returns:
             SelectOfScalar: SELECT statement.
         """
-        stmt = select(self._model_cls).where(self._model_cls.id == id, self._model_cls.is_active == True)
+        stmt = select(self._model_cls).where(self._model_cls.id == id)
         return stmt
 
-    async def get_by_id(self, id: str):
+    async def get_by_id(self, id: str) -> Optional[T]:
         stmt = await self._construct_get_stmt(id)
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none()
@@ -81,7 +85,7 @@ class GenericSqlRepository(GenericRepository):
             stmt = stmt.where(and_(*where_clauses))
         return stmt
 
-    async def list(self, **filters):
+    async def list(self, **filters) -> List[T]:
         stmt = await self._construct_list_stmt(**filters)
         result = await self._session.execute(stmt)
         return result.scalars()
@@ -92,19 +96,17 @@ class GenericSqlRepository(GenericRepository):
         result = await self._session.execute(stmt)
         return result.scalar()
 
-    async def add(self, data: Dict[str, Any]):
+    async def add(self, data: Dict[str, Any]) -> T:
         stmt = insert(self._model_cls).values(**data).returning(self._model_cls.id)
         result = await self._session.execute(stmt)
         return result.scalar_one()
 
-    async def update(self, record):
+    async def update(self, record: T) -> T:
         self._session.add(record)
         await self._session.flush()
         await self._session.refresh(record)
         return record
 
-    async def delete(self, id: int) -> None:
-        record = self.get_by_id(id)
-        if record is not None:
-            await self._session.delete(record)
-            await self._session.flush()
+    async def delete(self, record: T) -> None:
+        await self._session.delete(record)
+        await self._session.flush()

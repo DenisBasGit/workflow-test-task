@@ -1,13 +1,13 @@
 # DB
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_DB=wd_app_db
-POSTGRES_USER=wd_db_user
-POSTGRES_PASSWORD=wd_db_pass
+DB_HOST=postgres
+DB_PORT=5432
+DB_DB=wd_app_db
+DB_USER=wd_db_user
+DB_PASSWORD=wd_db_pass
 
 # TEST DB
-TEST_POSTGRES_HOST=test-postgres
-TEST_POSTGRES_PORT=6000
-TEST_POSTGRES_DB=test_wd_app_db
-TEST_POSTGRES_USER=test_wd_db_user
-TEST_POSTGRES_PASSWORD=test_wd_db_pass
+TEST_DB_HOST=test-postgres
+TEST_DB_PORT=6000
+TEST_DB_DB=test_wd_app_db
+TEST_DB_USER=test_wd_db_user
+TEST_DB_PASSWORD=test_wd_db_pass
