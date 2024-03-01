@@ -1,16 +1,20 @@
 import uuid
+from typing import Optional, Callable
 
 from src.utils.exceptions import NotFoundException
 from src.utils.repository import GenericSqlRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.workflow.repositories import WorkflowRepository
 from src.workflow.services.exceptions import WorkflowNotExists
 
 
 class WorkflowService:
 
-    def __init__(self, session: AsyncSession, repository):
+    def __init__(self, session: AsyncSession, repository: Callable[[AsyncSession], WorkflowRepository] = None):
         self.session = session
+        if repository is None:
+            repository = WorkflowRepository
         self.repository: GenericSqlRepository = repository(self.session)
 
     async def create(self, data) -> str:
@@ -35,3 +39,6 @@ class WorkflowService:
             raise WorkflowNotExists()
         await self.repository.delete(record)
         await self.session.commit()
+
+    async def exists(self, **filter) -> bool:
+        return await self.repository.exists(**filter)

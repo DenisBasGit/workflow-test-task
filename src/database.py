@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncSession
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase
@@ -34,3 +36,7 @@ class Base(DeclarativeBase):
                 cols.append(f"{col}={getattr(self, col)}")
 
         return f"<{self.__class__.__name__} {', '.join(cols)}>"
+
+    def __init__(self, **kwargs):
+        kwargs['id'] = kwargs.get('id', uuid4())
+        super().__init__(**kwargs)
