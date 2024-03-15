@@ -1,4 +1,5 @@
+from src.exceptions import WRKFEception
 
 
-class NotFoundException(Exception):
+class NotFoundException(WRKFEception):
     """Record Not Found Exception"""

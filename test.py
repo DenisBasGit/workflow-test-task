@@ -1,43 +1,34 @@
-# import networkx as nx
 import matplotlib.pyplot as plt
-#
-# def test():
-#     G = nx.Graph()
-#     G.add_node("Singapore")
-#     G.add_node("San Francisco")
-#     G.add_node("Tokyo")
-#     G.add_nodes_from(["Riga", "Copenhagen"])
-#     # nx.draw(G)
-#     nx.draw_shell(G)
-#     plt.show()
-#
-# print(test())
-
 import networkx as nx
 
+
 def create_workflow_graph(workflow_data):
+    """TEst"""
     graph = nx.DiGraph()
-    for node in workflow_data['nodes']:
-        graph.add_node(node['type'])
-        for edge in node.get('edges', []):
-            graph.add_edge(node['type'], edge)
+    for node in workflow_data["nodes"]:
+        graph.add_node(node["type"])
+        for edge in node.get("edges", []):
+            graph.add_edge(node["type"], edge)
     return graph
 
-def find_path_in_workflow(graph, start_node='Start', end_node='End'):
+
+def find_path_in_workflow(graph, start_node="Start", end_node="End"):
+    """TEst"""
     try:
         path = nx.shortest_path(graph, source=start_node, target=end_node)
         return path
     except nx.NetworkXNoPath:
         return None
 
+
 # Example workflow data
 workflow_data = {
-    'nodes': [
-        {'type': 'Start', 'edges': ['Message1']},
-        {'type': 'Message1', 'edges': ['Condition1']},
-        {'type': 'Condition1', 'edges': ['Message2', 'End']},
-        {'type': 'Message2', 'edges': ['End']},
-        {'type': 'End'}
+    "nodes": [
+        {"type": "Start", "edges": ["Message1"]},
+        {"type": "Message1", "edges": ["Condition1"]},
+        {"type": "Condition1", "edges": ["Message2", "End"]},
+        {"type": "Message2", "edges": ["End"]},
+        {"type": "End"},
     ]
 }
 
@@ -53,11 +44,11 @@ else:
     print("No path found")
 
 workflow_data = {
-    'nodes': [
-        {'type': 'Start', 'edges': ['Message1']},
-        {'type': 'Message1', 'edges': ['Condition1'], "status": "(Pending, Sent, Opened)"},
-        {'type': 'Condition1', 'edges': ['Message2', 'End']},
-        {'type': 'Message2', 'edges': ['End']},
-        {'type': 'End'}
+    "nodes": [
+        {"type": "Start", "edges": ["Message1"]},
+        {"type": "Message1", "edges": ["Condition1"], "status": "(Pending, Sent, Opened)"},
+        {"type": "Condition1", "edges": ["Message2", "End"]},
+        {"type": "Message2", "edges": ["End"]},
+        {"type": "End"},
     ]
 }

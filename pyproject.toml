@@ -3,3 +3,25 @@ pythonpath = [
     ".", "src",
 ]
 asyncio_mode="auto"
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = true
+ignore-magic = false
+ignore-semiprivate = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-module = true
+fail-under = 65
+exclude = ["venv"]
+ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*", ".*Meta", ".*Migration.*", ".*Config*."]
+verbose = 2
+quiet = false
+whitelist-regex = []
+color = true
+
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+include = '\.pyi?$'
+exclude = ["*.migrations.*"]

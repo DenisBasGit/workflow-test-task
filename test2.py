@@ -1,6 +1,8 @@
-import networkx as nx
 from enum import Enum
+
 import matplotlib.pyplot as plt
+import networkx as nx
+
 
 class NodeType(Enum):
     START = "Start"
@@ -8,10 +10,12 @@ class NodeType(Enum):
     CONDITION = "Condition"
     END = "End"
 
+
 class MessageStatus(Enum):
     PENDING = "pending"
     SENT = "sent"
     OPENED = "opened"
+
 
 class StartNode:
     def __init__(self):
@@ -19,6 +23,7 @@ class StartNode:
 
     def __str__(self):
         return self.type.value
+
 
 class MessageNode:
     def __init__(self, text, status=MessageStatus.PENDING):
@@ -29,6 +34,7 @@ class MessageNode:
     def __str__(self):
         return self.type.value
 
+
 class ConditionNode:
     def __init__(self, condition):
         self.type = NodeType.CONDITION
@@ -36,6 +42,7 @@ class ConditionNode:
 
     def __str__(self):
         return self.type.value
+
 
 class EndNode:
     def __init__(self):
@@ -84,7 +91,7 @@ G.add_edge(message_node_pending, end_node)
 # Виведення графу
 pos = nx.spring_layout(G)
 nx.draw(G, pos, with_labels=True)
-edge_labels = nx.get_edge_attributes(G, 'label')
+edge_labels = nx.get_edge_attributes(G, "label")
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
 # Показати граф

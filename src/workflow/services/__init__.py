@@ -1,9 +1,11 @@
-from .workflow import WorkflowService
-from .node import NodeService
+from .edge import EdgeService
 from .exceptions import UnableCreateNodeException
+from .node import NodeService
+from .workflow import WorkflowService
 
 __all__ = [
     "WorkflowService",
     "NodeService",
-    "UnableCreateNodeException"
+    "EdgeService",
+    "UnableCreateNodeException",
 ]

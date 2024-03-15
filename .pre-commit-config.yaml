@@ -1,0 +1,86 @@
+# .pre-commit-config.yaml
+
+exclude: 'docs|node_modules|migrations|.git|.tox|venv'
+default_stages: [commit]
+fail_fast: true
+
+repos:
+  - repo: local
+    hooks:
+      - id: removestar
+        name: removestar
+        stages: [commit]
+        language: system
+        entry: removestar -i apps
+        types: [python]
+      - id: isort
+        name: isort
+        stages: [commit]
+        language: system
+        entry: isort
+        types: [python]
+        args: ["--profile", "black"]
+      - id: black
+        name: black
+        stages: [commit]
+        language: system
+        entry: black src
+        types: [python]
+      - id: flake8
+        name: flake8
+        stages: [commit]
+        language: system
+        entry: flake8
+        types: [python]
+      - id: interrogate
+        name: interrogate
+        stages: [commit]
+        language: system
+        entry: interrogate src/ -I -M
+        types: [python]
+        args: [--config=pyproject.toml]
+      - id: dodgy
+        name: dodgy
+        stages: [ commit ]
+        language: system
+        entry: dodgy
+        types: [ python ]
+        pass_filenames: false
+      - id: pylint
+        name: pylint
+        stages: [commit]
+        language: system
+        entry: pylint apps
+        types: [python]
+      - id: bandit
+        name: bandit
+        stages: [ commit ]
+        language: system
+        entry: bandit -r src --ini=.bandit
+        types: [ python ]
+        pass_filenames: false
+      - id: mypy
+        name: mypy
+        stages: [ commit ]
+        language: system
+        entry: bash -c 'PYTHONPATH="$PYTHONPATH:$PWD" mypy'
+        types: [ python ]
+        pass_filenames: false
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-docstring-first
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: debug-statements
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-symlinks
+      - id: forbid-new-submodules

@@ -10,18 +10,8 @@ down:
 	@docker-compose down
 
 down-v:
-	@docker-compose down
+	@docker-compose down -v
 
-
-# If the first argument is "test"...
-ifeq (test,$(firstword $(MAKECMDGOALS)))
-  # use the rest as arguments for "test"
-  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_ARGS):;@:)
-endif
-test:
-	@docker-compose run -e PYTHONDONTWRITEBYTECODE=1 --rm web pytest -p no:cacheprovider $(RUN_ARGS) -s -vv --create-db
 
 ps:
 	@docker-compose ps
@@ -41,3 +31,9 @@ ifeq (logs,$(firstword $(MAKECMDGOALS)))
 endif
 logs:
 	@docker-compose logs -f $(RUN_ARGS)
+
+validate:
+	@docker-compose run -e PRE_COMMIT_HOME=/tmp --rm web pre-commit run --all-files -c .pre-commit-config.yaml
+
+test:
+	@docker-compose exec web pytest
