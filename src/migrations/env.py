@@ -14,7 +14,13 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_asyncpg + "?async_fallback=True")
+import sys
+
+
+if "pytest" in sys.modules:
+    config.set_main_option("sqlalchemy.url", settings.TEST_DATABASE_URL_asyncpg + "?async_fallback=True")
+else:
+    config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_asyncpg + "?async_fallback=True")
 
 target_metadata = Base.metadata
 

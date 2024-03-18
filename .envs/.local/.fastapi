@@ -1,6 +1,16 @@
 # DB
+# ------------------------------------------------------------------------------
 DB_HOST=postgres
 DB_PORT=5432
 DB_DB=wd_app_db
 DB_USER=wd_db_user
 DB_PASSWORD=wd_db_pass
+
+
+# Test DB
+#
+TEST_DB_HOST=test-postgres
+TEST_DB_PORT=5432
+TEST_DB_NAME=test_wd_app_db
+TEST_DB_USER=test_wd_db_user
+TEST_DB_PASSWORD=test_wd_db_pass

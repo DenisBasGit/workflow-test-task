@@ -30,8 +30,10 @@ def get_event_loop() -> Iterator[asyncio.AbstractEventLoop]:
 
 def pytest_sessionstart(session: Any) -> None:
     async def init_db() -> None:
+        print(33, Base.metadata)
         engine = create_async_engine(settings.DATABASE_URL_asyncpg)
         async with engine.begin() as conn:
+            print("Connection<20$")
             await conn.run_sync(Base.metadata.create_all)
         await engine.dispose()
 

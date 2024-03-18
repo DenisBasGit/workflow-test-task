@@ -11,17 +11,25 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+      - test-postgres
     env_file:
       - .envs/.local/.fastapi
 
   postgres:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data-workflow
     env_file:
       - .envs/.local/.db
     ports:
       - "5435:5432"
+
+  test-postgres:
+    image: postgres
+    env_file:
+      - .envs/.local/.test-db
+    ports:
+      - "5434:5432"
 
 
 volumes:
