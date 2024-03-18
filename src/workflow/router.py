@@ -80,7 +80,7 @@ async def workflow_shortest_path(workflow_id, service_node: NodeDependency, serv
             end_node = node
         G.add_node(node.id)
 
-    edges = await service_edge.list()
+    edges = await service_edge.get_by_workflow(workflow_id)
     for edge in edges:
         G.add_edge(edge.from_node_id, edge.to_node_id, label=edge.label)
 

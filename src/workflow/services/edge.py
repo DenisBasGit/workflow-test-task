@@ -32,6 +32,10 @@ class EdgeService:
         """
         return await self.repository.list(**filters)
 
+    async def get_by_workflow(self, workflow_id: UUID) -> Sequence[Edge]:
+        """List all edges related to a specific workflow."""
+        return await self.repository.get_by_workflow(workflow_id)
+
     async def create(self, data: CreateEdgeSchema) -> Edge:
         """
         Create Record
