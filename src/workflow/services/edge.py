@@ -28,12 +28,20 @@ class EdgeService:
         Args:
             **filters(Dict[str, str]) -> Key is column of table and value is value. Example: id=1
         Return:
-            ScalarResult(T) -> List of record
+            Sequence(Edge) -> List of record
         """
         return await self.repository.list(**filters)
 
     async def get_by_workflow(self, workflow_id: UUID) -> Sequence[Edge]:
-        """List all edges related to a specific workflow."""
+        """
+        List all edges related to a specific workflow.
+
+        Args:
+            workflow_id: UUID - Workflow id
+
+        Return:
+            Sequence(Edge) -> List of record
+        """
         return await self.repository.get_by_workflow(workflow_id)
 
     async def create(self, data: CreateEdgeSchema) -> Edge:
