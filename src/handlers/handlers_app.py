@@ -8,7 +8,7 @@ from src.core import app
 from src.exceptions import WRKFEception
 
 if TYPE_CHECKING:
-    from pydantic import ErrorDict
+    from pydantic.error_wrappers import ErrorDict
 
 
 def convert_error(err: "ErrorDict") -> dict[str, str]:

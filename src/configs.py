@@ -41,7 +41,10 @@ class Settings(BaseSettings):
         Return:
             url(str): Url for connect to db
         """
-        return f"postgresql+asyncpg://{self.TEST_DB_USER}:{self.TEST_DB_PASSWORD}@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"
+        return (
+            f"postgresql+asyncpg://{self.TEST_DB_USER}:{self.TEST_DB_PASSWORD}"
+            f"@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"
+        )
 
     model_config = SettingsConfigDict(env_file=".env")
 

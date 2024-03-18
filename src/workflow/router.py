@@ -1,3 +1,4 @@
+import uuid
 from typing import Any, Dict
 from uuid import UUID
 
@@ -35,7 +36,7 @@ async def update_workflow(service: WorkflowDependency, workflow_id, data: Update
 
 
 @router.delete("/{workflow_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_workflow(service: WorkflowDependency, workflow_id) -> None:
+async def delete_workflow(service: WorkflowDependency, workflow_id: uuid.UUID) -> None:
     """
     Delete workflow
     """
