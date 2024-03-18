@@ -1,7 +1,7 @@
 import uuid
 from typing import Annotated, Optional
 
-from pydantic import AfterValidator, BaseModel, Field, ValidationError, field_validator
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 from src.workflow.constants import MessageStatus, NodeType
 
@@ -23,7 +23,7 @@ class UpdateWorkflowSchema(WorkflowSchema):
 class CreateNodeSchema(BaseModel):
     """Node schema"""
 
-    workflow_id: Annotated[str, AfterValidator(lambda x: uuid.UUID(x, version=4))]
+    workflow_id: uuid.UUID
     type: NodeType
     text: Optional[str] = Field(default=None)
     status: Optional[MessageStatus] = Field(default=None)
@@ -32,8 +32,8 @@ class CreateNodeSchema(BaseModel):
 class CreateEdgeSchema(BaseModel):
     """Create edge schema"""
 
-    from_node_id: Annotated[str, AfterValidator(lambda x: uuid.UUID(x, version=4))]
-    to_node_id: Annotated[str, AfterValidator(lambda x: uuid.UUID(x, version=4))]
+    from_node_id: uuid.UUID
+    to_node_id: uuid.UUID
     label: Optional[str] = None
 
     @field_validator("label")

@@ -2,13 +2,13 @@ from typing import TYPE_CHECKING
 
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
-from pydantic.error_wrappers import ValidationError
+from pydantic import ValidationError
 
 from src.core import app
 from src.exceptions import WRKFEception
 
 if TYPE_CHECKING:
-    from pydantic.error_wrappers import ErrorDict
+    from pydantic import ErrorDict
 
 
 def convert_error(err: "ErrorDict") -> dict[str, str]:
